@@ -1,3 +1,4 @@
+import 'package:hockey_manager/model/ApplicationList.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -14,7 +15,8 @@ class Api {
     });
 
     if (response.statusCode == 200) {
-      var r = json.decode(response.body);
+      var j = json.decode(response.body);
+      var list = ApplicationList.fromJson(j);
       return null;
     } else {
       throw Exception("failure");
