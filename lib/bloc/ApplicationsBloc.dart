@@ -4,13 +4,13 @@ import 'package:hockey_manager/network/Api.dart';
 
 class ApplicationsBloc {
   final _api = Api();
-  final _fetcher = PublishSubject<Application>();
+  final _fetcher = PublishSubject<List<Application>>();
 
-  Observable<Application> get applications => _fetcher.stream;
+  Observable<List<Application>> get applications => _fetcher.stream;
 
   fetchApplication() async {
-    Application app = await _api.getApplications();
-    _fetcher.sink.add(app);
+    var apps = await _api.getApplications();
+    _fetcher.sink.add(apps);
   }
 
   dispose() {
