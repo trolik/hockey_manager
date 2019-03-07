@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hockey_manager/model/Application.dart';
+import 'package:hockey_manager/ui/ApplicationPage.dart';
 
 class ApplicationRow extends StatelessWidget {
   final Application application;
@@ -24,7 +25,13 @@ class ApplicationRow extends StatelessWidget {
         ],
       ),
       onTap: () {
-
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return new ApplicationPage(application);
+              }
+            ));
       },
     );
   }
