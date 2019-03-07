@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _applicationBloc.fetchApplication();
+    _applicationBloc.fetchApplications();
     
     return Scaffold(
       appBar: AppBar(
@@ -51,6 +51,4 @@ class _HomePageState extends State<HomePage> {
     _applicationBloc.dispose();
     super.dispose();
   }
-
-
 }

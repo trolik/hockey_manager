@@ -1,0 +1,38 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part "Version.g.dart";
+
+@JsonSerializable()
+class Version {
+  final String version;
+
+  @JsonKey(name: "shortversion")
+  final String shortVersion;
+
+  @JsonKey(name: "download_url")
+  final String downloadUrl;
+
+  final int appsize;
+  final int timestamp;
+
+  Version(this.version, this.shortVersion, this.downloadUrl, this.appsize, this.timestamp);
+
+  factory Version.fromJson(Map<String, dynamic> map) => _$VersionFromJson(map);
+}
+
+/*\
+{
+            "version": "208",
+            "mandatory": false,
+            "config_url": "https://rink.hockeyapp.net/manage/apps/1266/app_versions/208",
+            "download_url":"https://rink.hockeyapp.net/apps/0873e2b98ad046a92c170a243a8515f6/app_versions/208
+            "timestamp": 1326195742,
+            "appsize": 157547,
+            "device_family": null,
+            "notes": "<p>Fixed bug when users could not sign in.</p>\n",
+            "status": 2,
+            "shortversion": "1.1",
+            "minimum_os_version": null,
+            "title": "HockeyApp"
+        },
+ */

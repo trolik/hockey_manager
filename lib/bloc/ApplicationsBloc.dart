@@ -8,7 +8,7 @@ class ApplicationsBloc {
 
   Observable<List<Application>> get applications => _fetcher.stream;
 
-  fetchApplication() async {
+  fetchApplications() async {
     var apps = await _api.getApplications();
     _fetcher.sink.add(apps);
   }
