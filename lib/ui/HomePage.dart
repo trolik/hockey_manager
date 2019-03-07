@@ -45,4 +45,12 @@ class _HomePageState extends State<HomePage> {
           return ApplicationRow(apps.elementAt(index));
         });
   }
+
+  @override
+  void dispose() {
+    _applicationBloc.dispose();
+    super.dispose();
+  }
+
+
 }
