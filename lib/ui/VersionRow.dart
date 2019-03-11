@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hockey_manager/model/Version.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:install_plugin/install_plugin.dart';
 
 class VersionRow extends StatelessWidget {
   final Version version;
@@ -42,14 +43,31 @@ class VersionRow extends StatelessWidget {
 
   handleDownload() async {
     Directory tmpDirectory = await getTemporaryDirectory();
-    var tmpFile = File('${tmpDirectory.path}/${version.shortVersion}');
+    var tmpFile = File('${tmpDirectory.path}/${version.shortVersion}.apk');
 
-    print("downloading ${version.downloadUrl} to ${tmpFile.path}");
+    print("downloading ${version.downloadApkUrl} to ${tmpFile.path}");
+
 
     try {
-      var response = await Dio().download(version.downloadUrl, tmpFile.path);
+      if (await tmpFile.exists()) {
+        print("exists");
+      } else {
+        var response = await Dio().download(
+            version.downloadApkUrl,
+            tmpFile.path,
+            onReceiveProgress: (count, total) {
+              double percent = (count.toDouble() / total.toDouble()) * 100;
+              print("count $count, total $total, percent ${percent}");
+            });
+      }
 
-      var i = 2;
+      InstallPlugin.installApk(tmpFile.path, 'com.trolik.hockey_manager')
+      .then((result) {
+        print('install apk $result');
+      }).catchError((error) {
+        print('install apk error: $error');
+      });
+
     } catch (e) {
       print(e);
     }

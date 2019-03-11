@@ -22,6 +22,8 @@ class Version {
 
   get modifiedTime => timeago.format(updatedDate);
 
+  get downloadApkUrl => downloadUrl.replaceAll("/apps/", "/api/2/apps/") + "?format=apk";
+
   factory Version.fromJson(Map<String, dynamic> map) => _$VersionFromJson(map);
 }
 

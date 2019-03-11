@@ -37,6 +37,7 @@ dev_dependencies:
   timeago: ^2.0.10
   dio: 2.0.23
   path_provider: ^0.5.0+1
+  install_plugin: ^1.2.0
 
 # The following section is specific to Flutter.
 flutter:
