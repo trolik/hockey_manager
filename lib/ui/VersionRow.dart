@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hockey_manager/model/Version.dart';
 import 'package:dio/dio.dart';
+import 'package:hockey_manager/ui/VersionPage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:install_plugin/install_plugin.dart';
 import 'package:android_intent/android_intent.dart';
@@ -29,15 +30,13 @@ class VersionRow extends StatelessWidget {
         ],
       ),
       onTap: () {
-        handleDownload();
-
-        /*Navigator.push(
+        Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) {
-                  return new ApplicationPage(version);
+                  return new VersionPage(version);
                 }
-            ));*/
+            ));
       },
     );
   }
