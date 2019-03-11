@@ -1,20 +1,22 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hockey_manager/model/Application.dart';
 import 'package:hockey_manager/model/Version.dart';
 import 'package:dio/dio.dart';
 import 'package:hockey_manager/ui/VersionPage.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:install_plugin/install_plugin.dart';
 import 'package:android_intent/android_intent.dart';
 
 class VersionRow extends StatelessWidget {
   final Version version;
+  final Application application;
 
-  VersionRow(this.version);
+  VersionRow(this.version, this.application);
 
   @override
   Widget build(BuildContext context) {
+    //bool uninstallRequired = version.versionCode < application.
     return InkWell(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -22,6 +24,10 @@ class VersionRow extends StatelessWidget {
           ListTile(
             title: Text(version.shortVersion),
             subtitle: Text(version.modifiedTime),
+            trailing: Icon(
+                Icons.warning,
+                color: Theme.of(context).primaryColor
+            ),
           ),
           Divider(
             height: 2,

@@ -46,7 +46,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
     return ListView.builder(
         itemCount: versions.length,
         itemBuilder: (context, index) {
-          return VersionRow(versions.elementAt(index));
+          return VersionRow(versions.elementAt(index), _application);
         });
   }
 
