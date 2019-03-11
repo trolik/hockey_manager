@@ -14,7 +14,7 @@ class VersionRow extends StatelessWidget {
         children: <Widget>[
           ListTile(
             title: Text(version.shortVersion),
-            subtitle: Text(version.downloadUrl),
+            subtitle: Text(version.modifiedTime),
           ),
           Divider(
             height: 2,
