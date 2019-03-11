@@ -5,6 +5,7 @@ import 'package:hockey_manager/model/Version.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:install_plugin/install_plugin.dart';
+import 'package:android_intent/android_intent.dart';
 
 class VersionRow extends StatelessWidget {
   final Version version;
@@ -61,12 +62,25 @@ class VersionRow extends StatelessWidget {
             });
       }
 
-      InstallPlugin.installApk(tmpFile.path, 'com.trolik.hockey_manager')
+      AndroidIntent intent = AndroidIntent(
+        action: 'android.intent.action.UNINSTALL_PACKAGE',
+        data: "package:ru.rt.video.app.mobile"
+      );
+      intent.launch();
+
+      /*
+      Uri packageUri = Uri.parse("package:org.klnusbaum.test");
+            Intent uninstallIntent =
+              new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+            startActivity(uninstallIntent);
+       */
+
+      /*InstallPlugin.installApk(tmpFile.path, 'com.trolik.hockey_manager')
       .then((result) {
         print('install apk $result');
       }).catchError((error) {
         print('install apk error: $error');
-      });
+      });*/
 
     } catch (e) {
       print(e);
