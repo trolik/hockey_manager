@@ -5,7 +5,7 @@ part "Version.g.dart";
 
 @JsonSerializable()
 class Version {
-  final String version;
+  final int version;
 
   @JsonKey(name: "shortversion")
   final String shortVersion;

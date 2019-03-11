@@ -8,7 +8,7 @@ part of 'Version.dart';
 
 Version _$VersionFromJson(Map<String, dynamic> json) {
   return Version(
-      json['version'] as String,
+      json['version'] as int,
       json['shortversion'] as String,
       json['download_url'] as String,
       json['appsize'] as int,
