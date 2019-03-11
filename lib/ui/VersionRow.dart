@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hockey_manager/model/Version.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 
 class VersionRow extends StatelessWidget {
   final Version version;
@@ -23,6 +27,8 @@ class VersionRow extends StatelessWidget {
         ],
       ),
       onTap: () {
+        handleDownload();
+
         /*Navigator.push(
             context,
             MaterialPageRoute(
@@ -32,5 +38,20 @@ class VersionRow extends StatelessWidget {
             ));*/
       },
     );
+  }
+
+  handleDownload() async {
+    Directory tmpDirectory = await getTemporaryDirectory();
+    var tmpFile = File('${tmpDirectory.path}/${version.shortVersion}');
+
+    print("downloading ${version.downloadUrl} to ${tmpFile.path}");
+
+    try {
+      var response = await Dio().download(version.downloadUrl, tmpFile.path);
+
+      var i = 2;
+    } catch (e) {
+      print(e);
+    }
   }
 }
