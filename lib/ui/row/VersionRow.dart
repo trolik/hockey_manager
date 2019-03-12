@@ -9,10 +9,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:android_intent/android_intent.dart';
 
 class VersionRow extends StatelessWidget {
-  final Version version;
-  final Application application;
+  final Version _version;
+  final Application _application;
 
-  VersionRow(this.version, this.application);
+  VersionRow(this._version, this._application);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +22,8 @@ class VersionRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           ListTile(
-            title: Text(version.shortVersion),
-            subtitle: Text(version.modifiedTime),
+            title: Text(_version.shortVersion),
+            subtitle: Text(_version.modifiedTime),
             trailing: Icon(
                 Icons.warning,
                 color: Theme.of(context).primaryColor
@@ -40,7 +40,7 @@ class VersionRow extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) {
-                  return new VersionPage(version);
+                  return new VersionPage(_version, _application);
                 }
             ));
       },
@@ -49,9 +49,9 @@ class VersionRow extends StatelessWidget {
 
   handleDownload() async {
     Directory tmpDirectory = await getTemporaryDirectory();
-    var tmpFile = File('${tmpDirectory.path}/${version.shortVersion}.apk');
+    var tmpFile = File('${tmpDirectory.path}/${_version.shortVersion}.apk');
 
-    print("downloading ${version.downloadApkUrl} to ${tmpFile.path}");
+    print("downloading ${_version.downloadApkUrl} to ${tmpFile.path}");
 
 
     try {
@@ -59,7 +59,7 @@ class VersionRow extends StatelessWidget {
         print("exists");
       } else {
         var response = await Dio().download(
-            version.downloadApkUrl,
+            _version.downloadApkUrl,
             tmpFile.path,
             onReceiveProgress: (count, total) {
               double percent = (count.toDouble() / total.toDouble()) * 100;
