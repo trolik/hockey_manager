@@ -23,12 +23,90 @@ class _VersionPageState extends State<VersionPage> {
 
   @override
   Widget build(BuildContext context) {
+    _versionBloc.fetchDownloadInfo();
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(_version.shortVersion),
-        ),
-      body: Center(
-        child: Text(_version.versionCode.toString())),
+      appBar: AppBar(
+        title: Text(_application.title),
+      ),
+      body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              _buildVersionNameTextField(),
+
+              StreamBuilder<DownloadApkInfo>(
+                  stream: _versionBloc.downloadApkInfo,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _buildDownloadApkInfo(snapshot.data);
+                    }
+
+                    return Container(width: 0, height: 0);
+                  }
+              ),
+
+              StreamBuilder<DownloadProgress>(
+                  stream: _versionBloc.downloadProgress,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _buildDownloadProgress(snapshot.data);
+                    }
+
+                    return Container(width: 0, height: 0);
+                  }
+              ),
+            ],
+          )
+      ),
     );
+  }
+
+  TextFormField _buildVersionNameTextField() {
+    return TextFormField(
+      decoration: const InputDecoration(
+          labelText: "Version name",
+          labelStyle: TextStyle(fontSize: 20.0)
+      ),
+      enabled: false,
+      style: TextStyle(fontSize: 20.0),
+      initialValue: _version.shortVersion,
+    );
+  }
+
+  @override
+  void dispose() {
+    _versionBloc.dispose();
+    super.dispose();
+  }
+
+  Widget _buildDownloadApkInfo(DownloadApkInfo downloadApkInfo) {
+    if (downloadApkInfo.downloadInProgress) {
+      return Padding(
+          padding: EdgeInsets.only(top: 16.0),
+          child: Center(
+              child: CircularProgressIndicator()
+          )
+      );
+    } else {
+      return TextFormField(
+        decoration: const InputDecoration(
+            labelText: "Apk path",
+            labelStyle: TextStyle(fontSize: 20.0)
+        ),
+        enabled: false,
+        style: TextStyle(fontSize: 20.0),
+        initialValue: downloadApkInfo.apkPath,
+        maxLines: null,
+      );
+    }
+  }
+
+  Widget _buildDownloadProgress(DownloadProgress downloadProgress) {
+    return downloadProgress.percent < 100 ?
+      Padding(
+        padding: EdgeInsets.only(top: 16.0),
+        child: Text("Download in progress: ${downloadProgress.percent}%")
+      ) : Container(width: 0, height: 0);;
   }
 }
