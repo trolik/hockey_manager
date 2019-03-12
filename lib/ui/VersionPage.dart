@@ -3,6 +3,7 @@ import 'package:hockey_manager/bloc/VersionBloc.dart';
 import 'package:hockey_manager/model/Application.dart';
 import 'package:hockey_manager/model/Version.dart';
 import 'package:install_plugin/install_plugin.dart';
+import 'package:android_intent/android_intent.dart';
 
 class VersionPage extends StatefulWidget {
   final Version _version;
@@ -25,6 +26,7 @@ class _VersionPageState extends State<VersionPage> {
   @override
   Widget build(BuildContext context) {
     _versionBloc.fetchDownloadInfo();
+    _versionBloc.fetchAppInfo();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,6 +37,17 @@ class _VersionPageState extends State<VersionPage> {
           child: Column(
             children: <Widget>[
               _buildVersionNameTextField(),
+
+              StreamBuilder<InstalledAppInfo>(
+                  stream: _versionBloc.installedAppInfo,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _buildInstalledAppInfo(snapshot.data);
+                    }
+
+                    return Container(width: 0, height: 0);
+                  }
+              ),
 
               StreamBuilder<DownloadApkInfo>(
                   stream: _versionBloc.downloadApkInfo,
@@ -119,7 +132,7 @@ class _VersionPageState extends State<VersionPage> {
       Padding(
         padding: EdgeInsets.only(top: 16.0),
         child: Text("Download in progress: ${downloadProgress.percent}%")
-      ) : Container(width: 0, height: 0);;
+      ) : Container(width: 0, height: 0);
   }
 
   void installVersion(String apkPath) {
@@ -129,5 +142,42 @@ class _VersionPageState extends State<VersionPage> {
       }).catchError((error) {
         print('install apk error: $error');
       });
+  }
+
+  Widget _buildInstalledAppInfo(InstalledAppInfo data) {
+    return data.installed == true ? Column(
+      children: <Widget>[
+        TextFormField(
+          decoration: const InputDecoration(
+              labelText: "Installed app version code",
+              labelStyle: TextStyle(fontSize: 20.0)
+          ),
+          enabled: false,
+          style: TextStyle(fontSize: 20.0),
+          initialValue: data.versionCode.toString(),
+          maxLines: null,
+        ),
+
+        RaisedButton(
+          onPressed: () {
+            uninstallApp();
+          },
+          child: Text("un-install version"),
+        )
+      ],
+    ) : Container(width: 0, height: 0);
+  }
+
+  void uninstallApp() async {
+    try {
+      AndroidIntent intent = AndroidIntent(
+          action: 'android.intent.action.UNINSTALL_PACKAGE',
+          data: "package:${_application.bundleIdentifier}"
+      );
+      await intent.launch();
+
+    } catch (e) {
+      print(e);
+    }
   }
 }

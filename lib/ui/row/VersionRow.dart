@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hockey_manager/model/Application.dart';
 import 'package:hockey_manager/model/Version.dart';
 import 'package:hockey_manager/ui/VersionPage.dart';
-import 'package:android_intent/android_intent.dart';
 
 class VersionRow extends StatelessWidget {
   final Version _version;
@@ -41,28 +40,5 @@ class VersionRow extends StatelessWidget {
             ));
       },
     );
-  }
-
-  handleDownload() async {
-
-    try {
-      AndroidIntent intent = AndroidIntent(
-        action: 'android.intent.action.UNINSTALL_PACKAGE',
-        data: "package:ru.rt.video.app.mobile"
-      );
-      intent.launch();
-
-      /*
-      Uri packageUri = Uri.parse("package:org.klnusbaum.test");
-            Intent uninstallIntent =
-              new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-            startActivity(uninstallIntent);
-       */
-
-
-
-    } catch (e) {
-      print(e);
-    }
   }
 }

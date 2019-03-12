@@ -5,6 +5,7 @@ import 'package:hockey_manager/model/Application.dart';
 import 'package:hockey_manager/model/Version.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:device_apps/device_apps.dart' as device_apps;
 
 class VersionBloc {
   final Version _version;
@@ -12,11 +13,19 @@ class VersionBloc {
 
   final _fetcher = PublishSubject<DownloadApkInfo>();
   final _progress = PublishSubject<DownloadProgress>();
+  final _appInfo = PublishSubject<InstalledAppInfo>();
 
   Observable<DownloadApkInfo> get downloadApkInfo => _fetcher.stream;
   Observable<DownloadProgress> get downloadProgress => _progress.stream;
+  Observable<InstalledAppInfo> get installedAppInfo => _appInfo.stream;
 
   VersionBloc(this._version, this._application);
+
+  fetchAppInfo() async {
+    device_apps.Application installedApp = await device_apps.DeviceApps.getApp(_application.bundleIdentifier);
+
+    _appInfo.sink.add(InstalledAppInfo(installed: installedApp != null));
+  }
 
   fetchDownloadInfo() async {
     Directory tmpDirectory = await getTemporaryDirectory();
@@ -64,4 +73,11 @@ class DownloadProgress {
   int percent;
 
   DownloadProgress({this.count, this.total, this.percent});
+}
+
+class InstalledAppInfo {
+  bool installed;
+  int versionCode;
+
+  InstalledAppInfo({this.installed, this.versionCode});
 }
