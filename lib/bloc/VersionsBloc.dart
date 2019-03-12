@@ -1,6 +1,7 @@
 import 'package:hockey_manager/model/Version.dart';
 import 'package:hockey_manager/network/Api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:device_apps/device_apps.dart';
 
 class VersionsBloc {
   final _api = Api();

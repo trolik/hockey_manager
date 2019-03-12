@@ -155,6 +155,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.3"
+  device_apps:
+    dependency: "direct dev"
+    description:
+      name: device_apps
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
   dio:
     dependency: "direct dev"
     description:
