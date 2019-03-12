@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hockey_manager/model/Application.dart';
 import 'package:hockey_manager/model/Version.dart';
-import 'package:dio/dio.dart';
 import 'package:hockey_manager/ui/VersionPage.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:android_intent/android_intent.dart';
 
 class VersionRow extends StatelessWidget {
@@ -48,25 +44,8 @@ class VersionRow extends StatelessWidget {
   }
 
   handleDownload() async {
-    Directory tmpDirectory = await getTemporaryDirectory();
-    var tmpFile = File('${tmpDirectory.path}/${_version.shortVersion}.apk');
-
-    print("downloading ${_version.downloadApkUrl} to ${tmpFile.path}");
-
 
     try {
-      if (await tmpFile.exists()) {
-        print("exists");
-      } else {
-        var response = await Dio().download(
-            _version.downloadApkUrl,
-            tmpFile.path,
-            onReceiveProgress: (count, total) {
-              double percent = (count.toDouble() / total.toDouble()) * 100;
-              print("count $count, total $total, percent ${percent}");
-            });
-      }
-
       AndroidIntent intent = AndroidIntent(
         action: 'android.intent.action.UNINSTALL_PACKAGE',
         data: "package:ru.rt.video.app.mobile"
@@ -80,12 +59,7 @@ class VersionRow extends StatelessWidget {
             startActivity(uninstallIntent);
        */
 
-      /*InstallPlugin.installApk(tmpFile.path, 'com.trolik.hockey_manager')
-      .then((result) {
-        print('install apk $result');
-      }).catchError((error) {
-        print('install apk error: $error');
-      });*/
+
 
     } catch (e) {
       print(e);

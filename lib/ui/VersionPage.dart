@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hockey_manager/bloc/VersionBloc.dart';
 import 'package:hockey_manager/model/Application.dart';
 import 'package:hockey_manager/model/Version.dart';
+import 'package:install_plugin/install_plugin.dart';
 
 class VersionPage extends StatefulWidget {
   final Version _version;
@@ -89,15 +90,26 @@ class _VersionPageState extends State<VersionPage> {
           )
       );
     } else {
-      return TextFormField(
-        decoration: const InputDecoration(
-            labelText: "Apk path",
-            labelStyle: TextStyle(fontSize: 20.0)
-        ),
-        enabled: false,
-        style: TextStyle(fontSize: 20.0),
-        initialValue: downloadApkInfo.apkPath,
-        maxLines: null,
+      return Column(
+        children: <Widget>[
+          TextFormField(
+            decoration: const InputDecoration(
+                labelText: "Apk path",
+                labelStyle: TextStyle(fontSize: 20.0)
+            ),
+            enabled: false,
+            style: TextStyle(fontSize: 20.0),
+            initialValue: downloadApkInfo.apkPath,
+            maxLines: null,
+          ),
+
+          RaisedButton(
+            onPressed: () {
+              installVersion(downloadApkInfo.apkPath);
+            },
+            child: Text("install version"),
+          )
+        ],
       );
     }
   }
@@ -108,5 +120,14 @@ class _VersionPageState extends State<VersionPage> {
         padding: EdgeInsets.only(top: 16.0),
         child: Text("Download in progress: ${downloadProgress.percent}%")
       ) : Container(width: 0, height: 0);;
+  }
+
+  void installVersion(String apkPath) {
+    InstallPlugin.installApk(apkPath, 'com.trolik.hockey_manager')
+      .then((result) {
+        print('install apk $result');
+      }).catchError((error) {
+        print('install apk error: $error');
+      });
   }
 }
