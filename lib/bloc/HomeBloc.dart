@@ -2,7 +2,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:hockey_manager/model/Application.dart';
 import 'package:hockey_manager/network/Api.dart';
 
-class ApplicationsBloc {
+class HomeBloc {
   final _api = Api();
   final _fetcher = PublishSubject<List<Application>>();
 

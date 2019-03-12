@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hockey_manager/bloc/ApplicationsBloc.dart';
+import 'package:hockey_manager/bloc/HomeBloc.dart';
 import 'package:hockey_manager/model/Application.dart';
-import 'package:hockey_manager/ui/ApplicationRow.dart';
+import 'package:hockey_manager/ui/row/ApplicationRow.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -13,18 +13,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _applicationBloc = ApplicationsBloc();
+  var _homeBloc = HomeBloc();
 
   @override
   Widget build(BuildContext context) {
-    _applicationBloc.fetchApplications();
+    _homeBloc.fetchApplications();
     
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: StreamBuilder<List<Application>>(
-          stream: _applicationBloc.applications,
+          stream: _homeBloc.applications,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _applicationList(snapshot.data);
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _applicationBloc.dispose();
+    _homeBloc.dispose();
     super.dispose();
   }
 }

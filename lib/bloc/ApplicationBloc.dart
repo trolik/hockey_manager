@@ -3,7 +3,7 @@ import 'package:hockey_manager/network/Api.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:device_apps/device_apps.dart';
 
-class VersionsBloc {
+class ApplicationBloc {
   final _api = Api();
   final _fetcher = PublishSubject<List<Version>>();
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hockey_manager/bloc/VersionsBloc.dart';
+import 'package:hockey_manager/bloc/ApplicationBloc.dart';
 import 'package:hockey_manager/model/Application.dart';
 import 'package:hockey_manager/model/Version.dart';
-import 'package:hockey_manager/ui/VersionRow.dart';
+import 'package:hockey_manager/ui/row/VersionRow.dart';
 
 class ApplicationPage extends StatefulWidget {
   final Application _application;
@@ -15,20 +15,20 @@ class ApplicationPage extends StatefulWidget {
 
 class _ApplicationPageState extends State<ApplicationPage> {
   final Application _application;
-  var _versionsBloc = VersionsBloc();
+  var _applicationBloc = ApplicationBloc();
 
   _ApplicationPageState(this._application);
 
   @override
   Widget build(BuildContext context) {
-    _versionsBloc.fetchVersions(_application.publicIdentifier);
+    _applicationBloc.fetchVersions(_application.publicIdentifier);
 
     return Scaffold(
         appBar: AppBar(
           title: Text(_application.title),
         ),
         body: StreamBuilder<List<Version>>(
-            stream: _versionsBloc.versions,
+            stream: _applicationBloc.versions,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return _versionList(snapshot.data);
@@ -52,7 +52,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
 
   @override
   void dispose() {
-    _versionsBloc.dispose();
+    _applicationBloc.dispose();
     super.dispose();
   }
 }
